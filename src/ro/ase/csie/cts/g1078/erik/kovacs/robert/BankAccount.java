@@ -12,4 +12,9 @@ public abstract class BankAccount extends Account{
     public BankAccount(String iban) {
         this.id = iban;
     }
+
+    @Override
+    public String toString() {
+        return String.format("{ balance: %f, id: %s}", balance, id);
+    }
 }

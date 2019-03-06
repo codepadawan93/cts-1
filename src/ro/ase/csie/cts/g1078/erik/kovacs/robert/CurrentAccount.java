@@ -14,11 +14,7 @@ public class CurrentAccount extends BankAccount{
 
     @Override
     public void deposit(Object value) throws UnsupportedOperationException, IllegalTransferException {
-        double receivedValue = 0;
-        if(value instanceof Double)
-            receivedValue = (Double)value;
-        else
-            throw new UnsupportedOperationException("Wrong type");
+        double receivedValue = Utility.getValueFromObject(value);
         if(receivedValue <= 0)
             throw new IllegalTransferException();
 
