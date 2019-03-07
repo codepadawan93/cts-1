@@ -78,13 +78,17 @@ public class Main {
         }
 
         // Create a txt report
-        // Ask which type
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Which type of account do you want to report on?");
-        String type = scanner.nextLine();
+        String type = null;
 
         StringBuilder report = new StringBuilder();
         ArrayList<BankAccount> filteredAccounts = new ArrayList<>();
+
+        // Ask which type
+        do {
+            System.out.println("Which type of account do you want to report on?");
+            type = scanner.nextLine();
+        } while(!"current".equals(type) && !"savings".equals(type));
 
         if("current".equals(type)){
             for(BankAccount account : accounts1) {
