@@ -1,12 +1,18 @@
 package ro.ase.csie.cts.g1078.erik.kovacs.robert;
 
-public abstract class BankAccount extends Account{
+import java.io.Serializable;
+
+public abstract class BankAccount extends Account implements Serializable {
     protected double balance;
     protected String id;
 
     @Override
     public double getBalance() {
         return this.balance;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public BankAccount(String iban) {

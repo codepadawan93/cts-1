@@ -5,9 +5,14 @@ import ro.ase.csie.cts.g1078.erik.kovacs.robert.exceptions.IllegalTransferExcept
 import ro.ase.csie.cts.g1078.erik.kovacs.robert.exceptions.InsufficientFundsException;
 import ro.ase.csie.cts.g1078.erik.kovacs.robert.exceptions.InvalidInterestRateException;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
+    public static final String FILE_NAME = "accounts.dat";
+    public static final String REPORT_FILE_NAME = "report.txt";
+
     public static void main(String[] args){
         Banker banker = Banker.getBanker();
         CurrentAccount currentAccount = (CurrentAccount) banker.openAccount(BankAccountType.CurrentAccount);
@@ -63,5 +68,48 @@ public class Main {
         }catch (IllegalTransferException ite){
             ite.printStackTrace();
         }
+
+        // Test serialization / deserialization
+        Utility.serializeToFile(FILE_NAME, accounts);
+        ArrayList<BankAccount> accounts1= (ArrayList<BankAccount>) Utility.deserializeFromFile(FILE_NAME);
+
+        for(BankAccount bankAccount : accounts1){
+            System.out.println(bankAccount);
+        }
+
+        // Create a txt report
+        // Ask which type
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Which type of account do you want to report on?");
+        String type = scanner.nextLine();
+
+        StringBuilder report = new StringBuilder();
+        ArrayList<BankAccount> filteredAccounts = new ArrayList<>();
+
+        if("current".equals(type)){
+            for(BankAccount account : accounts1) {
+                if(account instanceof CurrentAccount)
+                    filteredAccounts.add(account);
+            }
+        } else if("savings".equals(type)){
+            for(BankAccount account : accounts1) {
+                if(account instanceof SavingsAccount)
+                    filteredAccounts.add(account);
+            }
+        } else {
+            System.out.println("Invalid type specified.");
+            return;
+        }
+
+        // Create the report with headers
+        report.append(String.format("=== %s accounts ===\r\n", type));
+        report.append("ID\t\t\t\t\t\t\t\t\t\tBALANCE\r\n");
+        for(BankAccount account : filteredAccounts){
+            report.append(String.format("%s\t\t%.2f\r\n", account.getId(), account.getBalance()));
+        }
+
+        // Write the report to file
+        Utility.writeToFile(REPORT_FILE_NAME, report.toString());
+        System.out.println("Done.");
     }
 }
