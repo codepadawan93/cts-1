@@ -5,9 +5,14 @@ import ro.ase.csie.cts.g1078.erik.kovacs.robert.exceptions.IllegalTransferExcept
 import ro.ase.csie.cts.g1078.erik.kovacs.robert.exceptions.InsufficientFundsException;
 import ro.ase.csie.cts.g1078.erik.kovacs.robert.exceptions.InvalidInterestRateException;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class Main {
+    public static final String FILE_NAME = "accounts.dat";
     public static void main(String[] args){
         Banker banker = Banker.getBanker();
         CurrentAccount currentAccount = (CurrentAccount) banker.openAccount(BankAccountType.CurrentAccount);
@@ -62,6 +67,14 @@ public class Main {
             ife.printStackTrace();
         }catch (IllegalTransferException ite){
             ite.printStackTrace();
+        }
+
+        // Test serialization / deserialization
+        Utility.serializeToFile(FILE_NAME, accounts);
+        ArrayList<BankAccount> accounts1= (ArrayList<BankAccount>) Utility.deserializeFromFile(FILE_NAME);
+
+        for(BankAccount bankAccount : accounts1){
+            System.out.println(bankAccount);
         }
     }
 }
