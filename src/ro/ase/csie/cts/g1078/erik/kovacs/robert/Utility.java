@@ -41,15 +41,6 @@ public class Utility {
             ex.printStackTrace();
         } catch (IOException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                if (outputStream != null) {
-                    outputStream.flush();
-                    outputStream.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
         }
     }
 
@@ -69,5 +60,18 @@ public class Utility {
             ex.printStackTrace();
         }
         return data1;
+    }
+
+    public static void writeToFile(String file, String content){
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(file));
+            writer.write(content);
+            writer.close();
+        } catch (FileNotFoundException fnfe){
+            fnfe.printStackTrace();
+        } catch (IOException ioe){
+            ioe.printStackTrace();
+        }
     }
 }

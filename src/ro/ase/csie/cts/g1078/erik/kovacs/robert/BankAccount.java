@@ -11,6 +11,10 @@ public abstract class BankAccount extends Account implements Serializable {
         return this.balance;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public BankAccount(String iban) {
         this.id = iban;
     }
